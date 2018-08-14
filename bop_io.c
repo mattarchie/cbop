@@ -78,7 +78,7 @@ int BOP_printf(const char *format, ...)
       if (data == NULL)
         BOP_abort_spec("Ran out of output buffer");
     } else  {
-      data = (char *) realloc(buf->data, new_size);
+      data = (char *) dlrealloc(buf->data, new_size); //I think this should be dlrealloc because it is the understudy if it isn't using mspace I think.
     }
     if (data == NULL) {
       va_end(v);
@@ -137,7 +137,7 @@ static void io_group_init( void ) {
 
   /* Initialize understudy buffer */
   assert(undy_buffer.data == NULL);
-  init_buffer(&undy_buffer, malloc(1), 1);
+  init_buffer(&undy_buffer, dlmalloc(1), 1); //had to use dlmalloc here!
 
   /* Initialize buffers */
   int i;
@@ -150,7 +150,7 @@ static void io_group_init( void ) {
 
 static void free_all_buffers( void ) {
   /* Free buffers */
-  free(undy_buffer.data);
+  dlfree(undy_buffer.data); //switched to dlfree since dlmalloc was used
   undy_buffer.data = NULL;
 
   int i;
@@ -177,7 +177,7 @@ static void io_undy_succ( void ) {
 }
 void io_on_malloc_rescue(){
   free_all_buffers();
-  init_buffer(&undy_buffer, malloc(1), 1);
+  init_buffer(&undy_buffer, dlmalloc(1), 1);
 }
 bop_port_t bop_io_port = {
   .ppr_group_init       = io_group_init,
