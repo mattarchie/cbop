@@ -68,8 +68,8 @@ static void _ppr_group_init( void ) {
   assert( getpgrp() == -monitor_group );
   spec_order = 0;
   ppr_sync_data_reset( );
-  ppr_group_init( );
   task_status = MAIN;  // at the end so monitoring is disabled until this point
+  ppr_group_init( );
 }
 
 /* Called at the ppr start of a main task and the end of the prior ppr
